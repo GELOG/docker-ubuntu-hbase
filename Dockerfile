@@ -22,10 +22,8 @@ RUN	wget https://www.apache.org/dist/hbase/$HBASE_VERSION/hbase-$HBASE_VERSION-b
 # Adding HBase to bashrc
 RUN	echo export PATH='$PATH':'$HBASE_HOME'/bin >> ~/.bashrc
 
-# Mounting the HBase data folder
+# Mounting the HBase data folder and exposing the ports
 VOLUME /data/persistent/hbase
-
-# Exposing the HBase ports
 EXPOSE 60000 60010 60020 60030
 
 # Editing the HBase configuration file to use the local filesystem
