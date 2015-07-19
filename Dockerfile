@@ -1,33 +1,35 @@
-# Building the image using Hadoop
-FROM gelog/hadoop
+# Building the image using Oracle JDK 7
+FROM gelog/java:openjdk7
 
 MAINTAINER Julien Beliveau
 
 # Setting HBASE environment variables
-ENV HBASE_VERSION 1.0.1.1
-ENV HBASE_INSTALL /usr/local/hbase
+ENV HBASE_VERSION 1.1.1
+ENV HBASE_HOME /usr/local/hbase
+
+# Installing wget
+RUN \
+    apt-get update && \
+    apt-get install -y wget && \
+    rm -rf /var/lib/apt/lists/*
 
 # Installing HBase
-RUN	wget https://www.apache.org/dist/hbase/stable/hbase-$HBASE_VERSION-bin.tar.gz && \
+RUN	wget https://www.apache.org/dist/hbase/$HBASE_VERSION/hbase-$HBASE_VERSION-bin.tar.gz && \
 	tar -xvf hbase-$HBASE_VERSION-bin.tar.gz && \
 	rm hbase-$HBASE_VERSION-bin.tar.gz && \
 	mv hbase-$HBASE_VERSION /usr/local/hbase
 		
-# Editing the conf files
-RUN	echo export JAVA_HOME=/usr/lib/jvm/jdk >> $HBASE_INSTALL/conf/hbase-env.sh && \
-	echo export HBASE_HOME=$HBASE_INSTALL >> ~/.bashrc && \
-	echo export PATH='$PATH':'$HBASE_HOME'/bin >> ~/.bashrc
+# Adding HBase to bashrc
+RUN	echo export PATH='$PATH':'$HBASE_HOME'/bin >> ~/.bashrc
 
-RUN head -n -2 $HBASE_INSTALL/conf/hbase-site.xml > $HBASE_INSTALL/conf/hbase-site.xml && \
-	echo '<configuration>' >> $HBASE_INSTALL/conf/hbase-site.xml && \
-	echo '<property>' >> $HBASE_INSTALL/conf/hbase-site.xml && \
-	echo '<name>hbase.rootdir</name>' >> $HBASE_INSTALL/conf/hbase-site.xml && \
-	echo '<value>file:/usr/local/hbase/HFiles</value>' >> $HBASE_INSTALL/conf/hbase-site.xml && \
-	echo '</property>' >> $HBASE_INSTALL/conf/hbase-site.xml && \
-	echo '<property>' >> $HBASE_INSTALL/conf/hbase-site.xml && \
-	echo '<name>hbase.zookeeper.property.dataDir</name>' >> $HBASE_INSTALL/conf/hbase-site.xml && \
-	echo '<value>/usr/local/hbase/zookeeper</value>' >> $HBASE_INSTALL/conf/hbase-site.xml && \
-	echo '</property>' >> $HBASE_INSTALL/conf/hbase-site.xml && \
-	echo '</configuration>' >> $HBASE_INSTALL/conf/hbase-site.xml
+# Mounting the HBase data folder
+VOLUME /data/persistent/hbase
 
-# Once the container is started, execute "./usr/local/hbase/bin/start-hbase.sh" and then "hbase shell"]
+# Exposing the HBase ports
+EXPOSE 60000 60010 60020 60030
+
+# Editing the HBase configuration file to use the local filesystem
+ADD conf/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
+
+# Starting HBase
+CMD $HBASE_HOME/bin/hbase master start
