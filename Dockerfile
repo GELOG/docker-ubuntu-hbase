@@ -29,7 +29,7 @@ VOLUME /data/persistent/hbase
 EXPOSE 60000 60010 60020 60030
 
 # Editing the HBase configuration file to use the local filesystem
-ADD conf/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
+ADD https://raw.githubusercontent.com/GELOG/docker-ubuntu-hbase/master/conf/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
 
 # Starting HBase
 CMD $HBASE_HOME/bin/hbase master start
