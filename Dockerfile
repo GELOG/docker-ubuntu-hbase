@@ -6,6 +6,7 @@ MAINTAINER Julien Beliveau
 # Setting HBASE environment variables
 ENV HBASE_VERSION 1.1.1
 ENV HBASE_HOME /usr/local/hbase
+ENV PATH $PATH:$HBASE_HOME/bin
 
 # Installing wget
 RUN \
@@ -19,9 +20,6 @@ RUN	wget https://www.apache.org/dist/hbase/$HBASE_VERSION/hbase-$HBASE_VERSION-b
 	rm hbase-$HBASE_VERSION-bin.tar.gz && \
 	mv hbase-$HBASE_VERSION /usr/local/hbase
 		
-# Adding HBase to bashrc
-RUN	echo export PATH='$PATH':'$HBASE_HOME'/bin >> ~/.bashrc
-
 # Mounting the HBase data folder and exposing the ports
 VOLUME /data/persistent/hbase
 EXPOSE 60000 60010 60020 60030
