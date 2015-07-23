@@ -11,5 +11,5 @@ Apache HBase is an open-source, distributed, versioned, non-relational database 
 
 # How to use this image?
 ### Starting the container
-	docker run -d --name hbase-master -h hbase-master -P -v /hostlocaldirectory:/data/persistent/hbase gelog/hbase
+	docker run -d --name hbase-master -h hbase-master -P -v /hostdirectory/docker-volumes/hbase-master:/data gelog/hbase
 	

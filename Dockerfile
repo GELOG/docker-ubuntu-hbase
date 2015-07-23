@@ -21,7 +21,7 @@ RUN	wget https://www.apache.org/dist/hbase/$HBASE_VERSION/hbase-$HBASE_VERSION-b
 	mv hbase-$HBASE_VERSION /usr/local/hbase
 		
 # Mounting the HBase data folder and exposing the ports
-VOLUME /data/persistent/hbase
+VOLUME /data
 EXPOSE 60000 60010 60020 60030
 
 # Editing the HBase configuration file to use the local filesystem
