@@ -16,7 +16,7 @@ RUN \
 
 # Installing HBase
 RUN	wget https://www.apache.org/dist/hbase/$HBASE_VERSION/hbase-$HBASE_VERSION-bin.tar.gz && \
-	tar -xvf hbase-$HBASE_VERSION-bin.tar.gz && \
+	tar -xf hbase-$HBASE_VERSION-bin.tar.gz && \
 	rm hbase-$HBASE_VERSION-bin.tar.gz && \
 	mv hbase-$HBASE_VERSION /usr/local/hbase
 		
