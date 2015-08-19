@@ -22,10 +22,30 @@ RUN	wget https://www.apache.org/dist/hbase/$HBASE_VERSION/hbase-$HBASE_VERSION-b
 		
 # Mounting the HBase data folder and exposing the ports
 VOLUME /data
-EXPOSE 16000 16010 16020 16030 16100 
 
 # Editing the HBase configuration file to use the local filesystem
 ADD https://raw.githubusercontent.com/GELOG/docker-ubuntu-hbase/master/conf/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
+
+####################
+# PORTS
+####################
+#
+# http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.3.0/bk_HDP_Reference_Guide/content/reference_chap2.html
+# http://www.cloudera.com/content/cloudera/en/documentation/core/latest/topics/cdh_ig_ports_cdh5.html
+# https://github.com/apache/hbase/blob/master/hbase-common/src/main/resources/hbase-default.xml
+#
+# HBase: HMaster
+#	16000 = hbase.master.port		(IPC)
+#	16010 = hbase.master.info.port		(HTTP / HBase Web UI)
+# HBase: RegionServer (RS)
+#	16020 = hbase.regionserver.port		(IPC
+#	16030 = hbase.regionserver.info.port	(HTTP)
+#	 8080 = hbase.rest.port			(HTTP / REST Server, optional)
+#	 8085 = hbase.rest.info.port		(HTTP / REST Server Web UI, optional)
+#	 9090 = 				(Thrift / Thrift Server, optional)
+#	 9095 = hbase.thrift.info.port		(Thrift / Thrift Server Web UI, optional
+#
+EXPOSE 16000 16010 16020 16030
 
 # Starting HBase
 CMD $HBASE_HOME/bin/hbase master start
