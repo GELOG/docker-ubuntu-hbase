@@ -49,7 +49,11 @@ ADD conf/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
 #	 9090 = 				(Thrift / Thrift Server, optional)
 #	 9095 = hbase.thrift.info.port		(Thrift / Thrift Server Web UI, optional
 #
+# Web UI shows link to regionservers using random ports (e.g.: http://hbase-master:50846/rs-status).
+# This is probably related to local mode.
+# 
 EXPOSE 16000 16010 16020 16030
 
 # Starting HBase
-CMD $HBASE_HOME/bin/hbase master start
+CMD ["hbase"]
+
