@@ -19,12 +19,15 @@ RUN	wget https://www.apache.org/dist/hbase/$HBASE_VERSION/hbase-$HBASE_VERSION-b
 	tar -xf hbase-$HBASE_VERSION-bin.tar.gz && \
 	rm hbase-$HBASE_VERSION-bin.tar.gz && \
 	mv hbase-$HBASE_VERSION /usr/local/hbase
-		
-# Mounting the HBase data folder and exposing the ports
+
+
+# Mounting the HBase data folder
 VOLUME /data
 
+
 # Editing the HBase configuration file to use the local filesystem
-ADD https://raw.githubusercontent.com/GELOG/docker-ubuntu-hbase/master/conf/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
+ADD conf/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
+
 
 ####################
 # PORTS
