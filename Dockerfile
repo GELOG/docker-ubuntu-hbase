@@ -1,4 +1,4 @@
-# Building the image using Oracle JDK 7
+# Building the image using Open JDK 7
 FROM gelog/java:openjdk7
 
 MAINTAINER Julien Beliveau
@@ -7,6 +7,7 @@ MAINTAINER Julien Beliveau
 ENV HBASE_VERSION 1.1.1
 ENV HBASE_HOME /usr/local/hbase
 ENV PATH $PATH:$HBASE_HOME/bin
+
 
 # Installing wget
 RUN \
