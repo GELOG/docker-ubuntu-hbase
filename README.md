@@ -1,15 +1,26 @@
-# docker-ubuntu-hbase
-Dockerfile for running HBase on Ubuntu
+# Docker image for HBase
 
-# What is HBase?
-Apache HBase is an open-source, distributed, versioned, non-relational database modeled after Google's Bigtable: A Distributed Storage System for Structured Data by Chang et al.
+[ ![issues](https://img.shields.io/github/issues/gelog/docker-ubuntu-hbase.svg) ](https://github.com/gelog/docker-ubuntu-hbase)
 
-[https://hbase.apache.org/](https://hbase.apache.org/)
 
-# Base Docker image
-* [gelog/java:openjdk7](https://registry.hub.docker.com/u/gelog/java/)
+## What is HBase?
+Use Apache HBase™ when you need random, realtime read/write access to your Big Data. This project's goal is the hosting of very large tables -- billions of rows X millions of columns -- atop clusters of commodity hardware. Apache HBase is an open-source, distributed, versioned, non-relational database modeled after Google's [Bigtable: A Distributed Storage System for Structured Data by Chang et al](http://research.google.com/archive/bigtable.html). Just as Bigtable leverages the distributed data storage provided by the Google File System, Apache HBase provides Bigtable-like capabilities on top of Hadoop and HDFS.
 
-# How to use this image?
+[http://hbase.apache.org/](http://hbase.apache.org/)
+
+
+## What is Docker?
+Docker is an open platform for developers and sysadmins to build, ship, and run distributed applications. Consisting of Docker Engine, a portable, lightweight runtime and packaging tool, and Docker Hub, a cloud service for sharing applications and automating workflows, Docker enables apps to be quickly assembled from components and eliminates the friction between development, QA, and production environments. As a result, IT can ship faster and run the same app, unchanged, on laptops, data center VMs, and any cloud.
+
+https://www.docker.com/whatisdocker/
+
+### What is a Docker Image?
+Docker images are the basis of containers. Images are read-only, while containers are writeable. Only the containers can be executed by the operating system.
+
+https://docs.docker.com/terms/image/
+
+
+## How to use this image?
 Note: currently this image has only been tested in local mode, using local file system.
 
 ### Data storage
@@ -58,4 +69,3 @@ EOF
 
 ### Accessing the web interface
 Open you browser at the URL `http://docker-host:16010/`, where `docker-host` is the name / IP of the host running the docker daemon. If using Linux, this is the IP of your linux box. If using OSX or Windows (via Boot2docker), you can find out your docker host by typing `boot2docker ip`. On my machine, the web UI runs at `http://192.168.59.103:16010/`
-
