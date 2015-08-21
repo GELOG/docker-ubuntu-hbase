@@ -36,7 +36,7 @@ This command starts a container for the HBase master in the background, and star
 docker run -d --name hbase-master -h hbase-master -p 16010:16010 \
        -v $HOME/data/hadoop/hbase:/data \
        gelog/hbase hbase master start && \
-docker logs -tf hbase-master
+docker logs -f hbase-master
 ```
 If everything looks good in the logs (no errors), hit `CTRL + C` to detach the console from the logs.
 
