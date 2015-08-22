@@ -47,6 +47,18 @@ docker run --rm -ti --name hbase-shell -h hbase-shell \
 		gelog/hbase hbase shell
 ```
 
+### Starting a HBase client container to run Java programs
+```bash
+docker run --rm -ti --name hbase-java -h hbase-java \
+		--link=hbase-master:hbase-master \
+		gelog/hbase bash
+```
+You'll then be able to compile and execute Java programs.
+```bash
+root@hbase-java:/# javac -cp .:$(hbase classpath) HbaseProgram.java
+root@hbase-java:/# java -cp .:$(hbase classpath) HbaseProgram
+```
+
 ### Executing a HBase shell command and detaching immediately
 Prints the list of commands available in the hbase shell
 ```bash
