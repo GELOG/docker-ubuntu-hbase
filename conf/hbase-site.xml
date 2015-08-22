@@ -2,8 +2,8 @@
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
   <property>
-	<name>hbase.zookeeper.quorum</name>
-	<value>hbase-master</value>
+    <name>hbase.zookeeper.quorum</name>
+    <value>hbase-master</value>
   </property>
   <property>
     <name>hbase.rootdir</name>
