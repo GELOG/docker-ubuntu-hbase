@@ -40,10 +40,11 @@ docker logs -f hbase-master
 ```
 If everything looks good in the logs (no errors), hit `CTRL + C` to detach the console from the logs.
 
-### Starting an interactive HBase shell session
-(temporary) Currently the recommended approach is execute the shell inside the hbase-master container
+### Starting an interactive HBase shell session on a client container
 ```bash
-docker exec -ti hbase-master hbase shell
+docker run --rm -ti --name hbase-shell -h hbase-shell \
+		--link=hbase-master:hbase-master \
+		gelog/hbase hbase shell
 ```
 
 ### Executing a HBase shell command and detaching immediately
