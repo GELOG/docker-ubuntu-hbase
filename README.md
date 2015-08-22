@@ -53,7 +53,7 @@ docker run --rm -ti --name hbase-java -h hbase-java \
 		--link=hbase-master:hbase-master \
 		gelog/hbase bash
 ```
-You'll then be able to compile and execute Java programs.
+You'll then be able to compile and execute Java programs that query the tables of the master container.
 ```bash
 root@hbase-java:/# javac -cp .:$(hbase classpath) HbaseProgram.java
 root@hbase-java:/# java -cp .:$(hbase classpath) HbaseProgram
