@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
+  <!-- Fixes #1: Allow a client container to connect to the master container -->
   <property>
     <name>hbase.zookeeper.quorum</name>
     <value>hbase-master</value>
