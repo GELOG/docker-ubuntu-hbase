@@ -27,14 +27,14 @@ Note: currently this image has only been tested in local mode, using local file 
 This image is configured (in `hbase-site.xml`) to store the HBase data at `file:///data/hbase`.
 To enable data persistence accross hbase restarts, the data must be stored outside Docker. In the examples below, a directory from the host is mounted into the container. To follow these examples, please do:
 ```bash
-mkdir -p ~/data/hadoop/hbase
+mkdir -p ~/data/hbase
 ```
 
 ### Starting a HBase container in local mode
 This command starts a container for the HBase master in the background, and starts tailing its logs.
 ```bash
 docker run -d --name hbase-master -h hbase-master -p 16010:16010 \
-       -v $HOME/data/hadoop/hbase:/data \
+       -v $HOME/data/hbase:/data \
        gelog/hbase hbase master start && \
 docker logs -f hbase-master
 ```
