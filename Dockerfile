@@ -4,7 +4,7 @@ FROM gelog/java:openjdk7
 MAINTAINER Julien Beliveau
 
 # Setting HBASE environment variables
-ENV HBASE_VERSION 1.1.1
+ENV HBASE_VERSION 1.1.2
 ENV HBASE_HOME /usr/local/hbase
 ENV PATH $PATH:$HBASE_HOME/bin
 
