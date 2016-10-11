@@ -1,33 +1,38 @@
-# Building the image using Open JDK 7
-FROM gelog/java:openjdk7
+FROM ubuntu:16.04
 
-MAINTAINER Julien Beliveau
 
-# Setting HBASE environment variables
-ENV HBASE_VERSION 1.1.2
+####################
+# JAVA
+####################
+ENV JAVA_VERSION 8
+ENV JAVA_HOME /usr/lib/jvm/jdk
+
+# NOTE: wget is required to download the package in the next sections
+RUN apt-get update   && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y wget openjdk-$JAVA_VERSION-jdk    && \
+    ln -s /usr/lib/jvm/java-$JAVA_VERSION-openjdk-amd64 /usr/lib/jvm/jdk    && \
+    rm -rf /var/lib/apt/lists/*
+
+
+
+####################
+# HBASE
+####################
+ENV HBASE_VERSION 1.2.3
 ENV HBASE_HOME /usr/local/hbase
 ENV PATH $PATH:$HBASE_HOME/bin
 
-
-# Installing wget
-RUN \
-    apt-get update && \
-    apt-get install -y wget && \
-    rm -rf /var/lib/apt/lists/*
-
-# Installing HBase
-RUN	wget https://www.apache.org/dist/hbase/$HBASE_VERSION/hbase-$HBASE_VERSION-bin.tar.gz && \
-	tar -xf hbase-$HBASE_VERSION-bin.tar.gz && \
-	rm hbase-$HBASE_VERSION-bin.tar.gz && \
-	mv hbase-$HBASE_VERSION /usr/local/hbase
-
+RUN wget https://www.apache.org/dist/hbase/$HBASE_VERSION/hbase-$HBASE_VERSION-bin.tar.gz   && \
+    tar -xf hbase-$HBASE_VERSION-bin.tar.gz   && \
+    rm hbase-$HBASE_VERSION-bin.tar.gz   && \
+    mv hbase-$HBASE_VERSION /usr/local/hbase
 
 # Mounting the HBase data folder
 VOLUME /data
 
-
 # Editing the HBase configuration file to use the local filesystem
 ADD conf/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
+
 
 
 ####################
