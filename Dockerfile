@@ -18,7 +18,7 @@ RUN apt-get update   && \
 ####################
 # HBASE
 ####################
-ENV HBASE_VERSION 1.2.3
+ENV HBASE_VERSION 1.2.4
 ENV HBASE_HOME /usr/local/hbase
 ENV PATH $PATH:$HBASE_HOME/bin
 
