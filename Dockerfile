@@ -22,7 +22,7 @@ ENV HBASE_VERSION 1.2.4
 ENV HBASE_HOME /usr/local/hbase
 ENV PATH $PATH:$HBASE_HOME/bin
 
-RUN wget https://www.apache.org/dist/hbase/$HBASE_VERSION/hbase-$HBASE_VERSION-bin.tar.gz   && \
+RUN wget https://archive.apache.org/dist/hbase/$HBASE_VERSION/hbase-$HBASE_VERSION-bin.tar.gz   && \
     tar -xf hbase-$HBASE_VERSION-bin.tar.gz   && \
     rm hbase-$HBASE_VERSION-bin.tar.gz   && \
     mv hbase-$HBASE_VERSION /usr/local/hbase
