@@ -149,3 +149,18 @@ docker logs -f hbase-master
 ```
 
 You can now browse to `http://localhost:50070/explorer.html#/` to see the contents of HDFS. You should see a `hbase` folder at the top-level directory.
+
+### Using HDFS with multiple hard drives
+If you have multiple hard drives, you can change the value of your `dfs.datanode.data.dir` to be a comma-separated list of folders, like the following:
+```xml
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>file:///data1,file:///data2,file:///data3,file:///data4</value>
+    </property>
+```
+Any folders that don't exist will be ignored.
+
+Then, you can run the container with the following options:
+```
+docker run -d --name hdfs -p 8042:8042 -p 8088:8088 -p 19888:19888 -p 50070:50070 -p 50075:50075 -v /mnt/disk1/hdfs:/data1 -v /mnt/disk2/hdfs:/data2 -v $HOME/hdfs-site.xml:/hadoop/etc/hadoop/hdfs-site.xml harisekhon/hadoop
+```
