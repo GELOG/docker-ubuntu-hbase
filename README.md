@@ -161,6 +161,6 @@ If you have multiple hard drives, you can change the value of your `dfs.datanode
 Any folders that don't exist will be ignored.
 
 Then, you can run the container with the following options:
-```
+```bash
 docker run -d --name hdfs -p 8042:8042 -p 8088:8088 -p 19888:19888 -p 50070:50070 -p 50075:50075 -v /mnt/disk1/hdfs:/data1 -v /mnt/disk2/hdfs:/data2 -v $HOME/hdfs-site.xml:/hadoop/etc/hadoop/hdfs-site.xml harisekhon/hadoop
 ```
