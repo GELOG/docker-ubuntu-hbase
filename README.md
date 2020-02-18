@@ -86,8 +86,13 @@ Open you browser at the URL `http://docker-host:16010/`, where `docker-host` is 
 ### Thrift
 Running with Thrift is as simple as:
 ```bash
-docker exec -d hbase-master hbase thrift start
+docker run -d --name hbase-master -h hbase-master -p 16010:16010 -p 9090:9090 \
+       -v $HOME/data/hbase:/data \
+       gelog/hbase hbase master start && \
+docker exec -d hbase-master hbase thrift start && \
+docker logs -f hbase-master
 ```
+Thrift can then be connected to at port 9090. If additional ports are needed, rerun and add a `-p [port]`.
 
 ### Using with HDFS
 We'll be using [harisekhon's](https://hub.docker.com/r/harisekhon/hadoop/) Hadoop image, which can be downloaded using `docker pull harisekhon/hadoop`. That image writes to `/tmp`/ by default, which we'd like to change. Create a new file called `hdfs-site.xml` in your home directory with contents:
