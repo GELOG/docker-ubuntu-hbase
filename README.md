@@ -21,7 +21,7 @@ https://docs.docker.com/terms/image/
 
 
 ## How to use this image?
-Note: currently this image has only been tested in local mode, using local file system.
+Note: currently this image has only been tested in local mode, using local file system. For HDFS support, see "Using HDFS" below.
 
 ### Data storage
 This image is configured (in `hbase-site.xml`) to store the HBase data at `file:///data/hbase`.
@@ -82,3 +82,65 @@ EOF
 
 ### Accessing the web interface
 Open you browser at the URL `http://docker-host:16010/`, where `docker-host` is the name / IP of the host running the docker daemon. If using Linux, this is the IP of your linux box. If using OSX or Windows (via Boot2docker), you can find out your docker host by typing `boot2docker ip`. On my machine, the web UI runs at `http://192.168.59.103:16010/`
+
+### Thrift
+Running with Thrift is as simple as:
+```bash
+docker exec -d hbase-master hbase thrift start
+```
+
+### Using with HDFS
+We'll be using [harisekhon's](https://hub.docker.com/r/harisekhon/hadoop/) Hadoop image, which can be downloaded using `docker pull harisekhon/hadoop`. That image writes to `/tmp`/ by default, which we'd like to change. Create a new file called `hdfs-site.xml` in your home directory with contents:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>file:///data</value>
+    </property>
+</configuration>
+```
+Setting the `dfs.datanode.data.dir` property changes the default directory that HDFS writes data to, which we've set to `/data`. We can now mount a host directory there to enable data persistence across restarts. We create an empty directory at `$HOME/hdfs-data` for this purpose.
+
+Create a Hadoop container with the following command:
+```bash
+docker run -d --name hdfs -p 8042:8042 -p 8088:8088 -p 19888:19888 -p 50070:50070 -p 50075:50075 -v $HOME/hdfs-data:/data -v $HOME/hdfs-site.xml:/hadoop/etc/hadoop/hdfs-site.xml harisekhon/hadoop
+```
+
+Now HDFS is running. Run `docker inspect hbase-master` and look for `IPAddress` near the bottom. Note the value, ours was `172.17.0.2`. 
+
+Next, we need to connect HBase. We can do this by rewriting `hbase-site.xml`. Create a file in `$HOME/hbase-site.xml` with the following contents:
+```xml
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <!-- Fixes #1: Allow a client container to connect to the master container -->
+  <property>
+    <name>hbase.zookeeper.quorum</name>
+    <value>hbase-master</value>
+  </property>
+  <property>
+    <name>hbase.rootdir</name>
+    <value>hdfs://172.17.0.2:8020/hbase/</value>
+  </property>
+  <property>
+    <name>hbase.zookeeper.property.dataDir</name>
+    <value>/data/hbase/zookeeper</value>
+  </property>
+</configuration>
+```
+
+Then run HBase with the following:
+```bash
+docker run -d --name hbase-master -h hbase-master -p 16010:16010 \
+       -v $HOME/hbase-site.xml:/usr/local/hbase/conf/hbase-site.xml \
+       gelog/hbase hbase master start && \
+docker logs -f hbase-master
+```
+
+You can now browse to `http://localhost:50070/explorer.html#/` to see the contents of HDFS. You should see a `hbase` folder at the top-level directory.
